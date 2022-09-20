@@ -2,10 +2,7 @@ package com.dawnflyc.jqljdbc;
 
 import com.dawnflyc.jqlapi.sql.ISqlHandle;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -45,7 +42,7 @@ public class JdbcSqlHandle implements ISqlHandle {
     @Override
     public int insert(String sql, Map<String, Object> params) {
         try (JdbcManage jdbcManage = new JdbcManage()){
-            try(PreparedStatement preparedStatement = jdbcManage.getConnection().prepareStatement(sql)){
+            try(PreparedStatement preparedStatement = jdbcManage.getConnection().prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)){
                 fillPreparedStatement(preparedStatement, params);
                 preparedStatement.executeUpdate();
                 ResultSet id = preparedStatement.getGeneratedKeys();
